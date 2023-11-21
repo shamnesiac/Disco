@@ -1,11 +1,11 @@
 /**
- * Group ID - 18
- * Member 1 Name - Anirudh Anand
- * Member 1 BITS ID - 2021B3A70981P
- * Member 2 Name - Arushi Gulati
- * Member 2 BITS ID - 2021B5A71704P
- * Member 3 Name - Jai Bothra
- * Member 3 BITS ID - 2021A7PS0015P
+ * Group ID -
+ * Member 1 Name -
+ * Member 1 BITS ID -
+ * Member 2 Name -
+ * Member 2 BITS ID -
+ * Member 3 Name -
+ * Member 3 BITS ID -
  */
 
 // ---------------------------DO NOT MODIFY (Begin)------------------------------
@@ -72,10 +72,14 @@ int find_junctions(Graph *g)
         for (int j = 0; j < g->n; j++)
         {
             if (g->adj[i][j] == 1)
+            {
                 noOfConnections++;
+            }
         }
-        if (noOfConnections >= 4) // increments the number of junctions when the number of connections for an element is 4 or more
+        if (noOfConnections >= 4)
+        {
             noOfJunctions++;
+        }
     }
     return noOfJunctions;
 }
@@ -89,24 +93,30 @@ int find_junctions(Graph *g)
  */
 bool sheldons_tour(Graph *g, bool SAME_STATION)
 {
-    if (SAME_STATION) // tests if bool SAME_STATION is true (2(a))
+    if (SAME_STATION == true)
     {
+
         for (int i = 0; i < g->n; i++)
         {
             int deg = 0;
             for (int j = 0; j < g->n; j++)
             {
+
                 if (g->adj[i][j])
                 {
                     deg++;
+
                     if ((deg % 2) != 0)
+                    {
                         return false;
+                    }
                 }
             }
         }
     }
-    else // tests if bool SAME_STATION is false (2(b))
+    else if (SAME_STATION == false)
     {
+
         int oddDegree = 0;
         for (int i = 0; i < g->n; i++)
         {
@@ -114,16 +124,24 @@ bool sheldons_tour(Graph *g, bool SAME_STATION)
             for (int j = 0; j < g->n; j++)
             {
                 if (g->adj[i][j] == 1)
+                {
                     deg++;
+                }
             }
             if (deg % 2 != 0)
+            {
                 oddDegree++;
+            }
         }
 
         if (oddDegree != 2)
+        {
             return false;
+        }
         else
+        {
             return true;
+        }
     }
 }
 
@@ -141,13 +159,15 @@ int **warshall(Graph *g)
     }
 
     // Code goes here
-    for (int i = 0; i < g->n; i++) // fills in existing connections
+    for (int i = 0; i < g->n; i++)
     {
 
         for (int j = 0; j < g->n; j++)
         {
             if (g->adj[i][j] == 1)
+            {
                 closure[i][j] = 1;
+            }
             else
                 closure[i][j] = 0;
         }
@@ -157,7 +177,9 @@ int **warshall(Graph *g)
         for (int i = 0; i < g->n; i++)
         {
             for (int j = 0; j < g->n; j++)
-                closure[i][j] = closure[i][j] || (closure[i][k] && closure[k][j]); // fills in the transitive connections using Warshall's Algorithm
+            {
+                closure[i][j] = closure[i][j] || (closure[i][k] && closure[k][j]);
+            }
         }
     }
 
@@ -178,7 +200,7 @@ int find_impossible_pairs(Graph *g)
         {
             if (closure[i][j] == 0)
             {
-                noOfcities++; // increases each impossible pair if the element cannot reach the other one by any means (using the transitive closure)
+                noOfcities++;
             }
         }
     }
@@ -196,40 +218,46 @@ int find_vital_train_tracks(Graph *g)
     for (int i = 0; i < g->n; i++)
     {
         for (int j = 0; j < g->n; j++)
-            testsum = testsum + test[i][j]; // sum of elements in transitive closure of original case
+            testsum = testsum + test[i][j];
     }
+    printf("%d\n", testsum);
     int essential = 0;
+
     for (int a = 0; a < g->n; a++)
     {
-        for (int b = (g->n - 1); b > a; b--) // this creates a case for each a, b connection being removed (testing)
+        for (int b = (g->n - 1); b > a; b--)
         {
-            if (g->adj[a][b] != 1) // if track doesn't exist in the original graph, ignore this case (no change made)
-                continue;
-            int **tempadj;     // making adjacent matrix for new case
-            int **tempclosure; // making transitive closure for new case
+            int **tempadj;
+            int **tempclosure;
             tempadj = (int **)malloc(g->n * sizeof(int *));
             for (int i = 0; i < g->n; i++)
+            {
                 tempadj[i] = calloc(g->n, sizeof(int));
+            }
             tempclosure = (int **)malloc(g->n * sizeof(int *));
             for (int i = 0; i < g->n; i++)
+            {
                 tempclosure[i] = calloc(g->n, sizeof(int));
-            for (int i = 0; i < g->n; i++) // copying adjacent matrix after removing the track defined by (a,b)
+            }
+            for (int i = 0; i < g->n; i++)
             {
                 for (int j = 0; j < g->n; j++)
                 {
-                    if (((i == a) && (j == b)) || ((i == b) && (j == a))) // removing the track defined by (a,b) (not copying from g->adj)
+                    if (((i == a) && (j == b)) || ((i == b) && (j == a)))
                         continue;
                     else
                         tempadj[i][j] = g->adj[i][j];
                 }
             }
-            for (int i = 0; i < g->n; i++) // Warshall's algorithm for new case
+            for (int i = 0; i < g->n; i++)
             {
 
                 for (int j = 0; j < g->n; j++)
                 {
                     if (tempadj[i][j] == 1)
+                    {
                         tempclosure[i][j] = 1;
+                    }
                     else
                         tempclosure[i][j] = 0;
                 }
@@ -239,19 +267,23 @@ int find_vital_train_tracks(Graph *g)
                 for (int i = 0; i < g->n; i++)
                 {
                     for (int j = 0; j < g->n; j++)
+                    {
                         tempclosure[i][j] = tempclosure[i][j] || (tempclosure[i][k] && tempclosure[k][j]);
+                    }
                 }
             }
-            int tempsum = 0; // calculating the sum of the transitive closure of the new case
+            int tempsum = 0;
             for (int i = 0; i < g->n; i++)
             {
                 for (int j = 0; j < g->n; j++)
                     tempsum = tempsum + tempclosure[i][j];
             }
-            if (tempsum != testsum) // if there is a difference, the track is essential (add 1 more essential case)
+            printf("%d\n", tempsum);
+            if (tempsum != testsum)
                 essential++;
         }
     }
+    printf("%d\n", essential);
     return essential;
 }
 
@@ -270,7 +302,7 @@ int *upgrade_railway_stations(Graph *g)
 
     for (int i = 0; i < g->n; i++)
         upgrades[i] = -1;
-    upgrades[0] = 0;
+    upgrades[0] = 1;
     for (int i = 0; i < g->n; i++)
     {
         for (int j = 0; j < g->n; j++)
@@ -280,11 +312,11 @@ int *upgrade_railway_stations(Graph *g)
                 if (upgrades[j] == -1)
                 {
                     if (upgrades[i] == 0)
-                        upgrades[j] = 1; // set the connected station to 0 if the previous station is 1 and vice versa
+                        upgrades[j] = 1;
                     else if (upgrades[i] == 1)
                         upgrades[j] = 0;
                 }
-                else if (upgrades[i] == upgrades[j]) // if two connected stations have the same upgrade, optimal upgrade not possible (return -1 array)
+                else if (upgrades[i] == upgrades[j])
                 {
                     for (int k = 0; k < g->n; k++)
                         upgrades[k] = -1;
@@ -304,42 +336,44 @@ int *upgrade_railway_stations(Graph *g)
  */
 int distance(Graph *g, int city_x, int city_y)
 {
-    if (city_x == city_y) // if both cities are the same, return distance as 0
-        return 0;
-    int const MAX = 1000;          // local constant
-    bool visited[MAX];             // array of visited stations (using modified BFS to compute distance)
-    for (int i = 0; i < g->n; i++) // initially all stations are not visited
+    if (city_x == city_y)
+        return city_x;
+    int MAX = 100;
+    bool visited[MAX];
+    for (int i = 0; i < g->n; i++)
+    {
         visited[i] = false;
-    int queue[MAX];          // creating a priority queue for storing the order of the tree
-    int front = 0, rear = 0; // implementing the queue using front and rear variable
-    visited[city_x] = true;  // source city is start of the tree
-    queue[rear++] = city_x;  // queue the starting city at the beginning and move rear
-    int distance = 1;        // since we will now queue the first connections, establish the distance of any next element as 1 from current
+    }
+    int queue[MAX];
+    int front = 0, rear = 0;
+    visited[city_x] = true;
+    queue[rear++] = city_x;
+    int distance = 1;
     int temp = city_x;
-    int gen = 0, size = 1; // gen tracks the number of elements in a generation (distance) and size guides how long the head must travel before new generation
+    int gen = 0, size = 1;
     while (front != rear)
     {
-        temp = queue[front++]; // temporary variable takes position at head and head moves by 1 (dequeues front)
-        size--;                // since head moves by 1, reduce size to keep track of the distance from the source (keeps track of dequeuing)
+        temp = queue[front++];
+        size--;
         for (int i = 0; i < g->n; i++)
         {
             if (g->adj[temp][i] && (i == city_y))
-                return distance;                // if the next element is the destination, return current distance as distance
-            if (g->adj[temp][i] && !visited[i]) // if city is not visited
+                return distance;
+            if (g->adj[temp][i] && !visited[i])
             {
-                visited[i] = true; // visit the city
-                queue[rear++] = i; // add that city to the priority queue and move rear
-                gen++;             // keeps track of the number of elements of new generation queued
+                visited[i] = true;
+                queue[rear++] = i;
+                gen++;
             }
         }
-        if (size == 0) // if the number of elements in the current generation are all traversed (tracked by the dequeuing of elements)
+        if (size == 0)
         {
-            size = gen; // next generation size is the number of elements queued by rear
-            gen = 0;    // since new generation, we need to once again start from size 0 of the generation
-            distance++; // increase distance to reflect new generation of BFS
+            size = gen;
+            gen = 0;
+            distance++;
         }
     }
-    return -1; // return -1 if both elements are not connected (distance never found even after the end of the queue)
+    return -1;
 }
 
 /**
@@ -348,14 +382,14 @@ int distance(Graph *g, int city_x, int city_y)
  */
 int railway_capital(Graph *g)
 {
-    int min = 1000000; // value set arbitarily large
-    int capital = -1;  // capital undecided hence set to -1
+    int min = __INT_MAX__;
+    int capital = -1;
     for (int i = 0; i < g->n; i++)
     {
         int sum = 0;
         for (int j = 0; j < g->n; j++)
             sum = sum + distance(g, i, j);
-        if (sum < min) // smallest sum of distances is capital
+        if (sum < min)
         {
             capital = i;
             min = sum;
@@ -369,23 +403,24 @@ int railway_capital(Graph *g)
  */
 bool maharaja_express_tour(Graph *g, int source, int current_city, int previous_city, int *visited)
 {
-    if (g->adj[previous_city][current_city] == 1) // check if the cities are adjacent
+    if (g->adj[previous_city][current_city] == 1)
     {
-        if (visited[current_city] == 1) // check if current city has been visited
+        if (visited[current_city] == 1)
         {
-            if (current_city == source) // if it is the source, the condition has been satisfied, so return true, else return false
+            if (current_city == source)
                 return true;
             else
                 return false;
         }
-        visited[current_city]++; // if not visited, then visit the current city
+        visited[current_city]++;
         for (int j = 0; j < g->n; j++)
         {
-            if (j != current_city && j != previous_city && maharaja_express_tour(g, source, j, current_city, visited)) // recursively apply dfs using current city as new previous city for all other indexes
-                return true;                                                                                           // if at any point the above conditions are satisfied, a recusrive path of true is taken until the main function returns true, else continue for other cases
+            if (j != current_city && j != previous_city && maharaja_express_tour(g, source, j, current_city, visited))
+                return true;
         }
     }
-    return false; // if the condition is never met, return false to close the recursive path
+
+    return false;
 }
 
 /**
@@ -402,17 +437,17 @@ bool maharaja_express(Graph *g, int source)
     }
     // Hint: Call the helper function and pass the visited array created here.
     visited[source] = 1;
-    for (int i = 0; i < g->n; i++) // using dfs
+    for (int i = 0; i < g->n; i++)
     {
-        if (i != source && maharaja_express_tour(g, source, i, source, visited)) // if the current index is not the source but maharaja express tour is possible, return true
+        if (i != source && maharaja_express_tour(g, source, i, source, visited))
             return true;
     }
-    return false; // if all indexes don't work with source, return false
+    return false;
 }
 
 int main()
 {
-    char input_file_path[100] = "testcase_4.txt"; // Can be modified
+    char input_file_path[100] = "testcase_3.txt"; // Can be modified
     Graph *g = create_graph(input_file_path);     // Do not modify
 
     // Code goes here
@@ -451,14 +486,14 @@ int main()
     printf("\nQuestion 5\n");
     int *upgrade = upgrade_railway_stations(g);
     printf("Railway Station Upgrades :\n");
-    for (int i = 0; i < g->n; i++)
+    for (int i = 0; i > g->n; i++)
     {
         if (upgrade[i] == -1)
         {
             printf("NOT POSSIBLE\n");
             break;
         }
-        else if (upgrade[i] == 0)
+        else if (upgrade[i] == 1)
             printf("%s = Restaurant\n", g->station_names[i]);
         else
             printf("%s = Maintenance depot\n", g->station_names[i]);
@@ -482,6 +517,5 @@ int main()
         bool maharaja = maharaja_express(g, i);
         printf("Maharaja Express tour starting from %s = %s\n", g->station_names[i], (maharaja ? "POSSIBLE" : "IMPOSSIBLE"));
     }
-    printf("\n");
     return 0;
 }
