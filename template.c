@@ -412,7 +412,7 @@ bool maharaja_express(Graph *g, int source)
 
 int main()
 {
-    char input_file_path[100] = "testcase_4.txt"; // Can be modified
+    char input_file_path[100] = "testcase_1.txt"; // Can be modified
     Graph *g = create_graph(input_file_path);     // Do not modify
 
     // Code goes here
@@ -421,7 +421,7 @@ int main()
     printf("nNumber of junctions = %d\n", noOfJunctions);
 
     printf("\nQuestion 2\n");
-    if (find_impossible_pairs(g))
+    if (!find_impossible_pairs(g))
     {
         if (sheldons_tour(g, true))
             printf("Sheldon's tour (ending in same city as start) = possible\n");
@@ -454,7 +454,7 @@ int main()
     printf("Number of vital train tracks = %d\n", vital);
 
     printf("\nQuestion 5\n");
-    if (find_impossible_pairs(g))
+    if (!find_impossible_pairs(g))
     {
         int *upgrade = upgrade_railway_stations(g);
         printf("Railway Station Upgrades :\n");
@@ -483,7 +483,7 @@ int main()
     printf("\nDistance between %s and %s = %d\n", g->station_names[a], g->station_names[b], dist);
 
     printf("\nQuestion 7\n");
-    if (find_impossible_pairs(g))
+    if (!find_impossible_pairs(g))
     {
         int capital = railway_capital(g);
         printf("Railway capital = %s\n", g->station_names[capital]);
