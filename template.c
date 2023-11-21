@@ -421,15 +421,20 @@ int main()
     printf("nNumber of junctions = %d\n", noOfJunctions);
 
     printf("\nQuestion 2\n");
-    if (sheldons_tour(g, true))
-        printf("Sheldon's tour (ending in same city as start) = possible\n");
-    else
-        printf("Sheldon's tour (ending in same city as start) = impossible\n");
+    if (find_impossible_pairs(g))
+    {
+        if (sheldons_tour(g, true))
+            printf("Sheldon's tour (ending in same city as start) = possible\n");
+        else
+            printf("Sheldon's tour (ending in same city as start) = impossible\n");
 
-    if (sheldons_tour(g, false))
-        printf("Sheldon's tour (ending in different city) = possible\n");
+        if (sheldons_tour(g, false))
+            printf("Sheldon's tour (ending in different city) = possible\n");
+        else
+            printf("Sheldon's tour (ending in different city) = impossible\n");
+    }
     else
-        printf("Sheldon's tour (ending in different city) = impossible\n");
+        printf("Not evaluated as graph is disconnected\n");
 
     printf("\nQuestion 3\n");
     int **c = warshall(g);
@@ -449,20 +454,25 @@ int main()
     printf("Number of vital train tracks = %d\n", vital);
 
     printf("\nQuestion 5\n");
-    int *upgrade = upgrade_railway_stations(g);
-    printf("Railway Station Upgrades :\n");
-    for (int i = 0; i < g->n; i++)
+    if (find_impossible_pairs(g))
     {
-        if (upgrade[i] == -1)
+        int *upgrade = upgrade_railway_stations(g);
+        printf("Railway Station Upgrades :\n");
+        for (int i = 0; i < g->n; i++)
         {
-            printf("NOT POSSIBLE\n");
-            break;
+            if (upgrade[i] == -1)
+            {
+                printf("NOT POSSIBLE\n");
+                break;
+            }
+            else if (upgrade[i] == 0)
+                printf("%s = Restaurant\n", g->station_names[i]);
+            else
+                printf("%s = Maintenance depot\n", g->station_names[i]);
         }
-        else if (upgrade[i] == 0)
-            printf("%s = Restaurant\n", g->station_names[i]);
-        else
-            printf("%s = Maintenance depot\n", g->station_names[i]);
     }
+    else
+        printf("Not evaluated as graph is disconnected\n");
 
     printf("\nQuestion 6\n");
     printf("Type in the indexes of the cities you want to calculate the distance between\n");
@@ -473,8 +483,13 @@ int main()
     printf("\nDistance between %s and %s = %d\n", g->station_names[a], g->station_names[b], dist);
 
     printf("\nQuestion 7\n");
-    int capital = railway_capital(g);
-    printf("Railway capital = %s\n", g->station_names[capital]);
+    if (find_impossible_pairs(g))
+    {
+        int capital = railway_capital(g);
+        printf("Railway capital = %s\n", g->station_names[capital]);
+    }
+    else
+        printf("Not evaluated as graph is disconnected\n");
 
     printf("\nQuestion 8\n");
     for (int i = 0; i < g->n; i++)
