@@ -309,7 +309,7 @@ int distance(Graph *g, int city_x, int city_y)
     bool visited[g->n];             // array of visited stations (using modified BFS to compute distance)
     for (int i = 0; i < g->n; i++) // initially all stations are not visited
         visited[i] = false;
-    int queue[g->n];          // creating a priority queue for storing the order of the tree
+    int queue[g->n];          // creating a priority queue for storing the order of the tree (queue will never be larger than sum of nodes)
     int front = 0, rear = 0; // implementing the queue using front and rear variable
     visited[city_x] = true;  // source city is start of the tree
     queue[rear++] = city_x;  // queue the starting city at the beginning and move rear
