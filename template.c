@@ -267,33 +267,51 @@ int *upgrade_railway_stations(Graph *g)
     int *upgrades = calloc(g->n, sizeof(int)); // Do not modify
 
     // Code goes here
-
-    for (int i = 0; i < g->n; i++)
+    for (int i = 0; i < g->n; i++) // initializing all upgrades to -1
         upgrades[i] = -1;
-    upgrades[0] = 0;
+    int queue[g->n];               // creating queue used in BFS
+    bool visited[g->n];            // creating visited array
+    for (int i = 0; i < g->n; i++) // initializing visited array to false
+        visited[i] = false;
+    int front = 0, rear = 0;
+    queue[rear++] = 0;
+    visited[0] = true;
+    upgrades[0] = 0; // initializing first station upgrade to be 0
+    int temp = 0;    // variable to store element to be dequeued
+    int count = 1;   // tracking variable for number of visited stations
+    while (front != rear)
+    {
+        temp = queue[front++];
+        for (int i = 0; i < g->n; i++)
+        {
+            if (g->adj[temp][i]) // testing adjacency
+            {
+                if (!visited[i]) // testing if the station is not visited
+                {
+                    visited[i] = true;                      // visiting the station
+                    queue[rear++] = i;                      // adding the station to the queue
+                    upgrades[i] = (upgrades[temp] + 1) % 2; // giving the opposite upgrade of the station being dequeued (current station)
+                    count++;                                // incrementing the number of visited stations
+                    if (count == g->n)                      // terminating condition (if all stations have been visited)
+                        front = rear;
+                }
+                if (visited[i] && (upgrades[i] == upgrades[temp])) // terminating condition (if impossibility is found)
+                    front = rear;
+            }
+        }
+    }
     for (int i = 0; i < g->n; i++)
     {
         for (int j = 0; j < g->n; j++)
         {
-            if (g->adj[i][j] == 1)
+            if (g->adj[i][j] && (upgrades[i] == upgrades[j]))
             {
-                if (upgrades[j] == -1)
-                {
-                    if (upgrades[i] == 0)
-                        upgrades[j] = 1; // set the connected station to 0 if the previous station is 1 and vice versa
-                    else if (upgrades[i] == 1)
-                        upgrades[j] = 0;
-                }
-                else if (upgrades[i] == upgrades[j]) // if two connected stations have the same upgrade, optimal upgrade not possible (return -1 array)
-                {
-                    for (int k = 0; k < g->n; k++)
-                        upgrades[k] = -1;
-                    return upgrades;
-                }
+                for (int k = 0; k < g->n; k++)
+                    upgrades[k] = -1; //-1 array made if the optimal upgrade is impossible
+                return upgrades;
             }
         }
     }
-
     return upgrades; // Do not modify
 }
 
@@ -306,10 +324,10 @@ int distance(Graph *g, int city_x, int city_y)
 {
     if (city_x == city_y) // if both cities are the same, return distance as 0
         return 0;
-    bool visited[g->n];             // array of visited stations (using modified BFS to compute distance)
+    bool visited[g->n];            // array of visited stations (using modified BFS to compute distance)
     for (int i = 0; i < g->n; i++) // initially all stations are not visited
         visited[i] = false;
-    int queue[g->n];          // creating a priority queue for storing the order of the tree (queue will never be larger than sum of nodes)
+    int queue[g->n];         // creating a priority queue for storing the order of the tree (queue will never be larger than sum of nodes)
     int front = 0, rear = 0; // implementing the queue using front and rear variable
     visited[city_x] = true;  // source city is start of the tree
     queue[rear++] = city_x;  // queue the starting city at the beginning and move rear
@@ -411,7 +429,7 @@ bool maharaja_express(Graph *g, int source)
 
 int main()
 {
-    char input_file_path[100] = "testcase_1.txt"; // Can be modified
+    char input_file_path[100] = "testcase_5.txt"; // Can be modified
     Graph *g = create_graph(input_file_path);     // Do not modify
 
     // Code goes here
