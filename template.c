@@ -479,8 +479,13 @@ int main()
     int a, b;
     scanf("%d", &a);
     scanf("%d", &b);
-    int dist = distance(g, a, b);
-    printf("\nDistance between %s and %s = %d\n", g->station_names[a], g->station_names[b], dist);
+    if (a >= g->n || b >= g->n)
+        printf("Input out of bounds!\n");
+    else
+    {
+        int dist = distance(g, a, b);
+        printf("\nDistance between %s and %s = %d\n", g->station_names[a], g->station_names[b], dist);
+    }
 
     printf("\nQuestion 7\n");
     if (!find_impossible_pairs(g))
