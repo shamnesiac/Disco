@@ -418,7 +418,7 @@ int main()
     // Code goes here
     printf("Question 1\n");
     int noOfJunctions = find_junctions(g);
-    printf("nNumber of junctions = %d\n", noOfJunctions);
+    printf("Number of junctions = %d\n", noOfJunctions);
 
     printf("\nQuestion 2\n");
     if (!find_impossible_pairs(g))
