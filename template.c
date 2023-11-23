@@ -97,12 +97,10 @@ bool sheldons_tour(Graph *g, bool SAME_STATION)
             for (int j = 0; j < g->n; j++)
             {
                 if (g->adj[i][j])
-                {
                     deg++;
-                    if ((deg % 2) != 0)
-                        return false;
-                }
             }
+            if ((deg % 2) != 0)
+                return false;
         }
     }
     else // tests if bool SAME_STATION is false (2(b))
@@ -429,7 +427,7 @@ bool maharaja_express(Graph *g, int source)
 
 int main()
 {
-    char input_file_path[100] = "testcase_5.txt"; // Can be modified
+    char input_file_path[100] = "testcase_2.txt"; // Can be modified
     Graph *g = create_graph(input_file_path);     // Do not modify
 
     // Code goes here
@@ -441,14 +439,14 @@ int main()
     if (!find_impossible_pairs(g))
     {
         if (sheldons_tour(g, true))
-            printf("Sheldon's tour (ending in same city as start) = possible\n");
+            printf("Sheldon's tour (ending in same city as start) = POSSIBLE\n");
         else
-            printf("Sheldon's tour (ending in same city as start) = impossible\n");
+            printf("Sheldon's tour (ending in same city as start) = IMPOSSIBLE\n");
 
         if (sheldons_tour(g, false))
-            printf("Sheldon's tour (ending in different city) = possible\n");
+            printf("Sheldon's tour (ending in different city) = POSSIBLE\n");
         else
-            printf("Sheldon's tour (ending in different city) = impossible\n");
+            printf("Sheldon's tour (ending in different city) = IMPOSSIBLE\n");
     }
     else
         printf("Not evaluated as graph is disconnected\n");
