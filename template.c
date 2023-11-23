@@ -149,7 +149,6 @@ int **warshall(Graph *g)
             else
                 closure[i][j] = 0;
         }
-        printf("hello\n");
     }
     for (int k = 0; k < g->n; k++)
     {
