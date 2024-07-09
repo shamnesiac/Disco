@@ -2,7 +2,7 @@ Discrete Structures for Computer Science (CS F222)
 Assignment - 1
 First Semester 2023-2024
 
-Date: 08/11/2023
+Date: 08/08/2023
 Maximum Marks: 30
 
 General Instructions:
